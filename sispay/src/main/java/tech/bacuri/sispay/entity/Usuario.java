@@ -49,4 +49,10 @@ public class Usuario {
 
         Assert.isTrue(duplicadas.isEmpty(), "forma de pagamento " + duplicadas + " duplicada");
     }
+
+    public Set<FormaPagamento> filtraFormasPagamento(Restaurante restaurante) {
+        return this.formasPagamento.stream()
+                .filter(restaurante::aceita)
+                .collect(Collectors.toSet());
+    }
 }

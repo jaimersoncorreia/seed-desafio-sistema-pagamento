@@ -9,13 +9,16 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 public enum FormaPagamento {
-    CARTAO(1, "Cartão"),
-    DINHEIRO(2, "Dinheiro"),
-    MAQUINA(3, "Máquina"),
-    CHEQUE(4, "Cheque"),
-    OUTROS(5, "Outros");
+    VISA(1, true, "Cartão visa"),
+    MASTER(2, true, "Cartão master"),
+    ELO(3, true, "Cartão elo"),
+    HIPERCARD(4, true, "Cartão hiper"),
+    MAQUINETA(5, false, "Maquina para passar cartão"),
+    DINHEIRO(6, false, "Dinheiro para pagar o pedido"),
+    OUTROS(7, true, "Outros");
 
     private final int codigo;
+    private final boolean online;
     private final String descricao;
 
     public static FormaPagamento obter(Integer codigo) {

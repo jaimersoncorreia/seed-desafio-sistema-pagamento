@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.Assert;
+import tech.bacuri.sispay.entity.converter.TipoFormaPagamentoConverter;
 import tech.bacuri.sispay.enums.FormaPagamento;
 
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class Restaurante {
 
     @Size(min = 1)
     @ElementCollection
+    @Convert(converter = TipoFormaPagamentoConverter.class)
     private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
     public Restaurante(String nome, FormaPagamento... formaPagamento) {
@@ -42,5 +44,9 @@ public class Restaurante {
                 .collect(Collectors.toSet());
 
         Assert.isTrue(duplicadas.isEmpty(), "forma de pagamento " + duplicadas + " duplicada");
+    }
+
+    public boolean aceita(FormaPagamento formaPagamento) {
+        return this.formasPagamento.contains(formaPagamento);
     }
 }

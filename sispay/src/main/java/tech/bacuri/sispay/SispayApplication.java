@@ -25,15 +25,15 @@ public class SispayApplication implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) {
-        usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.CARTAO, FormaPagamento.MAQUINA, FormaPagamento.CHEQUE));
-        usuarioRepository.save(new Usuario("teste2@bacuri.tech", FormaPagamento.DINHEIRO, FormaPagamento.MAQUINA));
-        usuarioRepository.save(new Usuario("teste3@bacuri.tech", FormaPagamento.CARTAO, FormaPagamento.CHEQUE));
-        usuarioRepository.save(new Usuario("teste4@bacuri.tech", FormaPagamento.OUTROS, FormaPagamento.MAQUINA));
+        usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.HIPERCARD));
+        usuarioRepository.save(new Usuario("teste2@bacuri.tech", FormaPagamento.MASTER, FormaPagamento.ELO));
+        usuarioRepository.save(new Usuario("teste3@bacuri.tech", FormaPagamento.VISA, FormaPagamento.HIPERCARD));
+        usuarioRepository.save(new Usuario("teste4@bacuri.tech", FormaPagamento.OUTROS, FormaPagamento.ELO, FormaPagamento.VISA));
 
-        restauranteRepository.save(new Restaurante("bacuri tech 1", FormaPagamento.CARTAO, FormaPagamento.MAQUINA));
-        restauranteRepository.save(new Restaurante("bacuri tech 2", FormaPagamento.CHEQUE, FormaPagamento.MAQUINA));
-        restauranteRepository.save(new Restaurante("bacuri tech 3", FormaPagamento.DINHEIRO, FormaPagamento.MAQUINA));
-        restauranteRepository.save(new Restaurante("bacuri tech 4", FormaPagamento.CARTAO, FormaPagamento.OUTROS));
+        restauranteRepository.save(new Restaurante("bacuri tech 1", FormaPagamento.VISA, FormaPagamento.ELO));
+        restauranteRepository.save(new Restaurante("bacuri tech 2", FormaPagamento.HIPERCARD, FormaPagamento.ELO));
+        restauranteRepository.save(new Restaurante("bacuri tech 3", FormaPagamento.MASTER, FormaPagamento.ELO));
+        restauranteRepository.save(new Restaurante("bacuri tech 4", FormaPagamento.VISA, FormaPagamento.OUTROS));
 
     }
 }
