@@ -7,11 +7,12 @@ import tech.bacuri.sispay.enums.FormaPagamento;
 import java.util.Set;
 
 @Service
-public class RegraUsuarioEmailFraudulento {
+public class RegraUsuarioEmailFraudulento implements RegraFraude {
     private final Set<String> emailsBloquados = Set.of("teste1@bacuri.tech");
 
+    @Override
     public boolean aceita(FormaPagamento formaPagamento, Usuario usuario) {
-        if(!formaPagamento.isOnline())
+        if (!formaPagamento.isOnline())
             return true;
 
         return !emailsBloquados.contains(usuario.getEmail());

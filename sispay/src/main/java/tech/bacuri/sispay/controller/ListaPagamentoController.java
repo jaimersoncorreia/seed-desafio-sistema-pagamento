@@ -14,8 +14,9 @@ import tech.bacuri.sispay.entity.Usuario;
 import tech.bacuri.sispay.enums.FormaPagamento;
 import tech.bacuri.sispay.repository.RestauranteRepository;
 import tech.bacuri.sispay.repository.UsuarioRepository;
-import tech.bacuri.sispay.service.RegraUsuarioEmailFraudulento;
+import tech.bacuri.sispay.service.RegraFraude;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -26,14 +27,14 @@ public class ListaPagamentoController {
 
     private final UsuarioRepository usuarioRepository;
     private final RestauranteRepository restauranteRepository;
-    private final RegraUsuarioEmailFraudulento regraUsuarioEmailFraudulento;
+    private final Collection<RegraFraude> regrasFraude;
 
     @Transactional
     @GetMapping
     public ResponseEntity<List<DetalheFormaPagamento>> lista(@Valid FiltraFormasPagamentoForm form) {
         Usuario usuario = usuarioRepository.findById(form.getIdUsuario()).orElseThrow(IllegalArgumentException::new);
         Restaurante restaurante = restauranteRepository.findById(form.getIdRestaurante()).orElseThrow(IllegalArgumentException::new);
-        Set<FormaPagamento> formaPagamentos = usuario.filtraFormasPagamento(restaurante, regraUsuarioEmailFraudulento);
+        Set<FormaPagamento> formaPagamentos = usuario.filtraFormasPagamento(restaurante, regrasFraude);
         return ResponseEntity.ok(formaPagamentos.stream().map(DetalheFormaPagamento::new).toList());
     }
 }
