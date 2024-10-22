@@ -25,12 +25,12 @@ public class SispayApplication implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) {
-        usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.HIPERCARD));
+        usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.HIPERCARD, FormaPagamento.DINHEIRO));
         usuarioRepository.save(new Usuario("teste2@bacuri.tech", FormaPagamento.MASTER, FormaPagamento.ELO));
         usuarioRepository.save(new Usuario("teste3@bacuri.tech", FormaPagamento.VISA, FormaPagamento.HIPERCARD));
         usuarioRepository.save(new Usuario("teste4@bacuri.tech", FormaPagamento.OUTROS, FormaPagamento.ELO, FormaPagamento.VISA));
 
-        restauranteRepository.save(new Restaurante("bacuri tech 1", FormaPagamento.VISA, FormaPagamento.ELO));
+        restauranteRepository.save(new Restaurante("bacuri tech 1", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.DINHEIRO));
         restauranteRepository.save(new Restaurante("bacuri tech 2", FormaPagamento.HIPERCARD, FormaPagamento.ELO));
         restauranteRepository.save(new Restaurante("bacuri tech 3", FormaPagamento.MASTER, FormaPagamento.ELO));
         restauranteRepository.save(new Restaurante("bacuri tech 4", FormaPagamento.VISA, FormaPagamento.OUTROS));

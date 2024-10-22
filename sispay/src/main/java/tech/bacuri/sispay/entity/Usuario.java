@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.util.Assert;
 import tech.bacuri.sispay.entity.converter.TipoFormaPagamentoConverter;
 import tech.bacuri.sispay.enums.FormaPagamento;
+import tech.bacuri.sispay.service.RegraUsuarioEmailFraudulento;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,9 +51,11 @@ public class Usuario {
         Assert.isTrue(duplicadas.isEmpty(), "forma de pagamento " + duplicadas + " duplicada");
     }
 
-    public Set<FormaPagamento> filtraFormasPagamento(Restaurante restaurante) {
+    public Set<FormaPagamento> filtraFormasPagamento(Restaurante restaurante,
+                                                     RegraUsuarioEmailFraudulento regraUsuarioEmailFraudulento) {
         return this.formasPagamento.stream()
                 .filter(restaurante::aceita)
+                .filter(formaPagamento -> regraUsuarioEmailFraudulento.aceita(formaPagamento, this))
                 .collect(Collectors.toSet());
     }
 }
