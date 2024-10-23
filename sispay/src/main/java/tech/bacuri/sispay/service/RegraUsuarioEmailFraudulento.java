@@ -12,9 +12,6 @@ public class RegraUsuarioEmailFraudulento implements RegraFraude {
 
     @Override
     public boolean aceita(FormaPagamento formaPagamento, Usuario usuario) {
-        if (!formaPagamento.isOnline())
-            return true;
-
-        return !emailsBloquados.contains(usuario.getEmail());
+        return !formaPagamento.isOnline() || !emailsBloquados.contains(usuario.getEmail());
     }
 }

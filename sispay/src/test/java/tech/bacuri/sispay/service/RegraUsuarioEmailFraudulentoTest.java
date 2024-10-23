@@ -2,36 +2,32 @@ package tech.bacuri.sispay.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import tech.bacuri.sispay.entity.Usuario;
 import tech.bacuri.sispay.enums.FormaPagamento;
 
+import java.util.stream.Stream;
+
 class RegraUsuarioEmailFraudulentoTest {
-    Usuario usuario1 = new Usuario("teste1@bacuri.tech", FormaPagamento.ELO);
-    Usuario usuario2 = new Usuario("teste2@bacuri.tech", FormaPagamento.ELO);
 
-    @Test
-    @DisplayName("deveria aceitar todo pagamento offline")
-    public void teste1() {
+    @DisplayName("deveria lidar com todo tipo de pagamento")
+    @ParameterizedTest
+    @MethodSource("geradorTeste1")
+    public void teste1(FormaPagamento forma, Usuario usuario, boolean esperado) {
         RegraUsuarioEmailFraudulento regra = new RegraUsuarioEmailFraudulento();
-        boolean aceita = regra.aceita(FormaPagamento.DINHEIRO, usuario2);
-        Assertions.assertTrue(aceita);
+        boolean aceita = regra.aceita(forma, usuario);
+        Assertions.assertEquals(esperado, aceita);
     }
 
-    @Test
-    @DisplayName("deveria aceitar todo pagamento online para usuarios diferentes de teste1")
-    public void teste2() {
-        RegraUsuarioEmailFraudulento regra = new RegraUsuarioEmailFraudulento();
-        boolean aceita = regra.aceita(FormaPagamento.ELO, usuario2);
-        Assertions.assertTrue(aceita);
+    public static Stream<Arguments> geradorTeste1() {
+        Usuario invalido = new Usuario("teste1@bacuri.tech", FormaPagamento.ELO);
+        Usuario valido = new Usuario("teste2@bacuri.tech", FormaPagamento.ELO);
+        return Stream.of(
+                Arguments.of(FormaPagamento.DINHEIRO, valido, true),
+                Arguments.of(FormaPagamento.VISA, valido, true),
+                Arguments.of(FormaPagamento.VISA, invalido, false)
+        );
     }
-
-    @Test
-    @DisplayName("deveria bloquear pagamento online de teste1")
-    public void teste3() {
-        RegraUsuarioEmailFraudulento regra = new RegraUsuarioEmailFraudulento();
-        boolean aceita = regra.aceita(FormaPagamento.ELO, usuario1);
-        Assertions.assertFalse(aceita);
-    }
-
 }
