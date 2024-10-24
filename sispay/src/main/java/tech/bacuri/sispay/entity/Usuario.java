@@ -60,4 +60,10 @@ public class Usuario {
                 )
                 .collect(Collectors.toSet());
     }
+
+    public boolean podePagar(Restaurante restaurante,
+                             @NotNull FormaPagamento formaPagamento,
+                             Collection<RegraFraude> regrasFraudes) {
+        return filtraFormasPagamento(restaurante, regrasFraudes).contains(formaPagamento);
+    }
 }
