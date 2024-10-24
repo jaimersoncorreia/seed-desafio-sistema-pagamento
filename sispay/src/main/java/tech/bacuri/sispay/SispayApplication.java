@@ -10,6 +10,7 @@ import tech.bacuri.sispay.entity.Usuario;
 import tech.bacuri.sispay.enums.FormaPagamento;
 import tech.bacuri.sispay.repository.RestauranteRepository;
 import tech.bacuri.sispay.repository.UsuarioRepository;
+import tech.bacuri.sispay.service.EnvioEmailService;
 
 @AllArgsConstructor
 @SpringBootApplication
@@ -17,6 +18,7 @@ public class SispayApplication implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;
     private final RestauranteRepository restauranteRepository;
+    private final EnvioEmailService envioEmailService;
 
     public static void main(String[] args) {
         SpringApplication.run(SispayApplication.class, args);
@@ -25,6 +27,13 @@ public class SispayApplication implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) {
+        envioEmailService.enviar(EnvioEmailService.Mensagem.builder()
+                .destinatario("jaimerson_correia+teste1@hotmail.com")
+                .destinatario("jaimerson_correia+teste2@hotmail.com")
+                .assunto("[TESTE] Enviar E-mail")
+                .conteudo("<strong>Caro Senhor Primeiro</strong>, <br />Venho atravez desse primeiro teste de envio de email cumprimentá-lo")
+                .build());
+
         usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.HIPERCARD, FormaPagamento.DINHEIRO));
         usuarioRepository.save(new Usuario("teste2@bacuri.tech", FormaPagamento.MASTER, FormaPagamento.ELO, FormaPagamento.DINHEIRO));
         usuarioRepository.save(new Usuario("teste3@bacuri.tech", FormaPagamento.VISA, FormaPagamento.HIPERCARD));

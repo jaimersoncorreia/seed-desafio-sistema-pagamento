@@ -19,8 +19,9 @@ public class EndPointsExternos {
     private final AtomicInteger ids = new AtomicInteger();
 
     @GetMapping("/{idPedido}")
-    public ResponseEntity<?> valorPedido(@PathVariable Long idPedido) {
+    public ResponseEntity<?> valorPedido(@PathVariable Long idPedido) throws InterruptedException {
         System.out.println("idPedido = " + idPedido);
+        Thread.sleep(5000);
         if (ids.getAndIncrement() % 3 == 0)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
