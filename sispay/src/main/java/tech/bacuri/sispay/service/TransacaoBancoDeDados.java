@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Service
-public class ExecutaTransacao {
+public class TransacaoBancoDeDados {
 
     @Transactional
     public <T> T executa(Supplier<T> supplier) {
