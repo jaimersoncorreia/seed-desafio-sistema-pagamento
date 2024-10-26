@@ -34,6 +34,6 @@ public class CombinacaoRestauranteUsuarioFormPagamentoValidator implements Valid
         Usuario usuario = usuarioRepository.getUsuarioById(form.getIdUsuario());
         Restaurante restaurante = restauranteRepository.getRestaurantesById(form.getIdRestaurante());
         if (!usuario.podePagar(restaurante, form.getFormaPagamento(), regrasFraudes))
-            errors.reject("A combinação entre usuário, restaurante e forma de pagamento não é válida");
+            errors.reject(null, "A combinação entre usuário, restaurante e forma de pagamento não é válida");
     }
 }

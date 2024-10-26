@@ -29,6 +29,12 @@ public class NovoPedidoOfflineForm {
     @ExistsId(domainClass = Usuario.class, fieldName = "id")
     private Long idUsuario;
 
+    public NovoPedidoOfflineForm(FormaPagamento formaPagamento, Long idRestaurante, Long idUsuario) {
+        this.formaPagamento = formaPagamento;
+        this.idRestaurante = idRestaurante;
+        this.idUsuario = idUsuario;
+    }
+
     public boolean isOffline() {
         return !formaPagamento.isOnline();
     }
