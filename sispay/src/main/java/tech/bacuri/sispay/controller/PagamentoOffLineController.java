@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import tech.bacuri.sispay.dto.NovoPedidoOfflineForm;
-import tech.bacuri.sispay.entity.Transacao;
+import tech.bacuri.sispay.entity.Pagamento;
 import tech.bacuri.sispay.service.TransacaoBancoDeDados;
 import tech.bacuri.sispay.validator.NovoPedidoOfflineFormValidator;
 
@@ -40,9 +40,9 @@ public class PagamentoOffLineController {
 
         //1 //1
         String uuid = transacaoBancoDeDados.executa(() -> {
-            Transacao novaTransacaoOffline = form.toTransacao(idPedido, valor, manager);
-            manager.persist(novaTransacaoOffline);
-            return novaTransacaoOffline.getUuid();
+            Pagamento novoPagamentoOffline = form.toPagamento(idPedido, valor, manager);
+            manager.persist(novoPagamentoOffline);
+            return novoPagamentoOffline.getCodigo();
         });
 
         return ResponseEntity.ok(uuid);

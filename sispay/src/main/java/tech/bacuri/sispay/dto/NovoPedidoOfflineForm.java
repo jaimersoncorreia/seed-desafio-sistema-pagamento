@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
+import tech.bacuri.sispay.entity.Pagamento;
 import tech.bacuri.sispay.entity.Restaurante;
-import tech.bacuri.sispay.entity.Transacao;
 import tech.bacuri.sispay.entity.Usuario;
 import tech.bacuri.sispay.enums.FormaPagamento;
 import tech.bacuri.sispay.enums.StatusTransacao;
@@ -40,11 +40,9 @@ public class NovoPedidoOfflineForm {
     }
 
     @Transactional
-    public Transacao toTransacao(Long idPedido,
-                                 BigDecimal valor,
-                                 EntityManager manager) {
+    public Pagamento toPagamento(Long idPedido, BigDecimal valor, EntityManager manager) {
         Usuario usuario = manager.find(Usuario.class, this.idUsuario);
         Restaurante restaurante = manager.find(Restaurante.class, this.idRestaurante);
-        return new Transacao(idPedido, valor, usuario, restaurante, StatusTransacao.ESPERANDO_CONFIRMACAO_PAGAMENTO);
+        return new Pagamento(idPedido, valor, usuario, restaurante, StatusTransacao.ESPERANDO_CONFIRMACAO_PAGAMENTO);
     }
 }

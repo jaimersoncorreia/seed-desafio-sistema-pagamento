@@ -11,6 +11,7 @@ import tech.bacuri.sispay.dto.NovoPedidoOfflineForm;
 @RequiredArgsConstructor
 public class NovoPedidoOfflineFormValidator implements Validator {
     private final CombinacaoRestauranteUsuarioFormPagamentoValidator combinacaoRestauranteUsuarioFormPagamentoValidator;
+    private final PagamentoGeradoValidator pagamentoGeradoValidator;
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
@@ -23,5 +24,6 @@ public class NovoPedidoOfflineFormValidator implements Validator {
 
         combinacaoRestauranteUsuarioFormPagamentoValidator.validate(target, errors);
         new FormaPagamentoOfflineValidator().validate(target, errors);
+        pagamentoGeradoValidator.validate(target, errors);
     }
 }
