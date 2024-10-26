@@ -1,8 +1,12 @@
 package tech.bacuri.sispay.validator;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import tech.bacuri.sispay.dto.NovoPedidoOfflineForm;
 import tech.bacuri.sispay.entity.Restaurante;
@@ -14,52 +18,43 @@ import tech.bacuri.sispay.service.RegraFraude;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 class CombinacaoRestauranteUsuarioFormPagamentoValidatorTest {
 
-    @Test
-    @DisplayName("verifica se a combinação entre usuário, restaurante e forma pagamento é válida")
-    public void teste1() {
-        RestauranteRepository restauranteRepository = Mockito.mock(RestauranteRepository.class);
-        UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
-        Collection<RegraFraude> regrasFrudes = List.of((formaPagamento, usuario) -> true);
+    RestauranteRepository restauranteRepository = Mockito.mock(RestauranteRepository.class);
+    UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
+    Collection<RegraFraude> regrasFrudes = List.of((formaPagamento, usuario) -> true);
+    CombinacaoRestauranteUsuarioFormPagamentoValidator validator = new CombinacaoRestauranteUsuarioFormPagamentoValidator(
+            restauranteRepository, usuarioRepository, regrasFrudes);
 
-        CombinacaoRestauranteUsuarioFormPagamentoValidator validator = new CombinacaoRestauranteUsuarioFormPagamentoValidator(
-                restauranteRepository, usuarioRepository, regrasFrudes);
-        Usuario usuarioPagamentoDinheiro = new Usuario("teste1@bacuri.tech", FormaPagamento.DINHEIRO);
-        Restaurante restauranteAceitaDinheiro = new Restaurante("restaurante", FormaPagamento.DINHEIRO, FormaPagamento.ELO);
-        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(FormaPagamento.DINHEIRO, 1L, 1L);
+    public static Stream<Arguments> geradorTeste1() {
+        return Stream.of(
+                Arguments.of(FormaPagamento.DINHEIRO, List.of(FormaPagamento.DINHEIRO), List.of(FormaPagamento.DINHEIRO), false),
+                Arguments.of(FormaPagamento.DINHEIRO, List.of(FormaPagamento.DINHEIRO), List.of(FormaPagamento.VISA), true),
+                Arguments.of(FormaPagamento.DINHEIRO, List.of(FormaPagamento.DINHEIRO), List.of(FormaPagamento.DINHEIRO, FormaPagamento.MASTER), false),
+                Arguments.of(FormaPagamento.DINHEIRO, List.of(FormaPagamento.DINHEIRO, FormaPagamento.MAQUINETA), List.of(FormaPagamento.ELO, FormaPagamento.MASTER), true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("geradorTeste1")
+    @DisplayName("verifica se a combinação entre usuário, restaurante e forma pagamento é válida")
+    public void teste1(FormaPagamento formaPagamentoEscolhida,
+                       List<FormaPagamento> formasPagamentoRestaurante,
+                       List<FormaPagamento> formasPagamentoUsuario,
+                       boolean esperado) {
+
+        Usuario usuarioPagamentoDinheiro = new Usuario("teste1@bacuri.tech", formasPagamentoUsuario.toArray(new FormaPagamento[]{}));
+        Restaurante restauranteAceitaDinheiro = new Restaurante("restaurante", formasPagamentoRestaurante.toArray(new FormaPagamento[]{}));
+        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(formaPagamentoEscolhida, 1L, 1L);
 
         Mockito.when(usuarioRepository.getUsuarioById(1L)).thenReturn(usuarioPagamentoDinheiro);
         Mockito.when(restauranteRepository.getRestaurantesById(1L)).thenReturn(restauranteAceitaDinheiro);
-        Errors errors = Mockito.mock(Errors.class);
-        Mockito.when(errors.hasErrors()).thenReturn(false);
+        Errors errors = new BeanPropertyBindingResult(form, "teste");
 
         validator.validate(form, errors);
 
-        Mockito.verify(errors, Mockito.never()).reject(null, "A combinação entre usuário, restaurante e forma de pagamento não é válida");
-    }
-
-    @Test
-    @DisplayName("verifica se a combinação entre usuário, restaurante e forma pagamento não é válida")
-    public void teste2() {
-        RestauranteRepository restauranteRepository = Mockito.mock(RestauranteRepository.class);
-        UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
-        Collection<RegraFraude> regrasFrudes = List.of((formaPagamento, usuario) -> true);
-
-        CombinacaoRestauranteUsuarioFormPagamentoValidator validator = new CombinacaoRestauranteUsuarioFormPagamentoValidator(
-                restauranteRepository, usuarioRepository, regrasFrudes);
-        Usuario usuarioPagamentoMaquineta = new Usuario("teste1@bacuri.tech", FormaPagamento.MAQUINETA);
-        Restaurante restauranteAceitaDinheiro = new Restaurante("restaurante", FormaPagamento.DINHEIRO, FormaPagamento.ELO);
-        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(FormaPagamento.DINHEIRO, 1L, 1L);
-
-        Mockito.when(usuarioRepository.getUsuarioById(1L)).thenReturn(usuarioPagamentoMaquineta);
-        Mockito.when(restauranteRepository.getRestaurantesById(1L)).thenReturn(restauranteAceitaDinheiro);
-        Errors errors = Mockito.mock(Errors.class);
-        Mockito.when(errors.hasErrors()).thenReturn(false);
-
-        validator.validate(form, errors);
-
-        Mockito.verify(errors).reject(null, "A combinação entre usuário, restaurante e forma de pagamento não é válida");
+        Assertions.assertEquals(esperado, errors.hasGlobalErrors());
     }
 }
