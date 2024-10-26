@@ -1,35 +1,36 @@
 package tech.bacuri.sispay.validator;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import tech.bacuri.sispay.dto.NovoPedidoOfflineForm;
 import tech.bacuri.sispay.enums.FormaPagamento;
 
+import java.util.stream.Stream;
+
 class FormaPagamentoOfflineValidatorTest {
 
-    @Test
-    @DisplayName("se o pedido não é offline então rejeita")
-    public void teste1() {
-        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(FormaPagamento.ELO, 1L, 1L);
-        Errors errors = Mockito.mock(Errors.class);
-
-        FormaPagamentoOfflineValidator validator = new FormaPagamentoOfflineValidator();
-        validator.validate(form, errors);
-
-        Mockito.verify(errors).rejectValue("formaPagamento", null, "A forma de pagamento deve ser offline");
+    private static Stream<Arguments> geradorTeste1() {
+        return Stream.of(
+                Arguments.of(FormaPagamento.DINHEIRO, false),
+                Arguments.of(FormaPagamento.ELO, true)
+        );
     }
 
-    @Test
-    @DisplayName("valida pedidos offline")
-    public void teste2() {
-        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(FormaPagamento.DINHEIRO, 1L, 1L);
-        Errors errors = Mockito.mock(Errors.class);
+    @DisplayName("verifica pagamento offline")
+    @ParameterizedTest
+    @MethodSource("geradorTeste1")
+    public void teste0(FormaPagamento forma, boolean esperado) {
+        NovoPedidoOfflineForm form = new NovoPedidoOfflineForm(forma, 1L, 1L);
+        Errors errors = new BeanPropertyBindingResult(form, "teste");
 
         FormaPagamentoOfflineValidator validator = new FormaPagamentoOfflineValidator();
         validator.validate(form, errors);
 
-        Mockito.verify(errors, Mockito.never()).rejectValue("formaPagamento", null, "A forma de pagamento deve ser offline");
+        Assertions.assertEquals(esperado, errors.hasFieldErrors("formaPagamento"));
     }
 }
