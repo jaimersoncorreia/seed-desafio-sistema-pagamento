@@ -45,4 +45,8 @@ public class Pagamento {
         this.transacoes.add(new Transacao(statusInicial));
         this.codigo = UUID.randomUUID().toString();
     }
+
+    public void conclui() {
+        this.transacoes.add(new Transacao(StatusTransacao.CONCLUIDA));
+    }
 }
