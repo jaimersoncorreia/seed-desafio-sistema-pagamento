@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.Assert;
 import tech.bacuri.sispay.enums.StatusTransacao;
 
 import java.math.BigDecimal;
@@ -47,6 +48,11 @@ public class Pagamento {
     }
 
     public void conclui() {
+        Assert.state(!foiConcluido(), "Você não pode concluir uma compra que já foi concluída");
         this.transacoes.add(new Transacao(StatusTransacao.CONCLUIDA));
+    }
+
+    public boolean foiConcluido() {
+        return this.transacoes.stream().anyMatch(Transacao::foiConcluido);
     }
 }

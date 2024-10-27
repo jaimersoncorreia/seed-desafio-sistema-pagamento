@@ -9,6 +9,7 @@ import lombok.Setter;
 import tech.bacuri.sispay.entity.converter.StatusTransacaoConverter;
 import tech.bacuri.sispay.enums.StatusTransacao;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor(onConstructor_ = @Deprecated)
@@ -25,5 +26,9 @@ public class Transacao {
     public Transacao(StatusTransacao statusTransacao) {
         this.statusTransacao = statusTransacao;
         this.codigo = UUID.randomUUID().toString();
+    }
+
+    public boolean foiConcluido() {
+        return Objects.equals(this.statusTransacao, StatusTransacao.CONCLUIDA);
     }
 }

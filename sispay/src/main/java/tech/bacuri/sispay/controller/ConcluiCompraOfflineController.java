@@ -27,6 +27,10 @@ public class ConcluiCompraOfflineController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         Pagamento pagamento = possivelPagamento.get();
+
+        if (pagamento.foiConcluido())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         pagamento.conclui();
     }
 }
