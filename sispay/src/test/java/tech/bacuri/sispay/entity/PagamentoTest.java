@@ -10,9 +10,10 @@ import java.math.BigDecimal;
 
 class PagamentoTest {
 
-    private final Pagamento pagamento = new Pagamento(
+    private final Pagamento pagamento = Pagamento.offline(
             1L,
             BigDecimal.TEN,
+            FormaPagamento.DINHEIRO,
             new Usuario("teste1@bacuri.tech", FormaPagamento.DINHEIRO),
             new Restaurante("teste", FormaPagamento.DINHEIRO),
             StatusTransacao.ESPERANDO_CONFIRMACAO_PAGAMENTO

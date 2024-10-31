@@ -17,6 +17,7 @@ public class ObtemValorPedido {
         try {
             RestTemplate template = new RestTemplate();
             var pedido = template.getForObject("http://localhost:8080/sispay/api/pedidos/{idPedido}", Map.class, idPedido);
+//            var pedido = template.getForObject("${enderecos-externos.valor-pedido}", Map.class, idPedido);
             Assert.notNull(pedido, "não deveria ter vindo nullo");
             return new BigDecimal(pedido.get("valor").toString());
         } catch (HttpClientErrorException e) {

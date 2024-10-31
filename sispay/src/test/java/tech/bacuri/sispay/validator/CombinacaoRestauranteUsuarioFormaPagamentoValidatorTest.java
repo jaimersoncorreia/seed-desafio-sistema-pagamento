@@ -20,12 +20,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-class CombinacaoRestauranteUsuarioFormPagamentoValidatorTest {
+class CombinacaoRestauranteUsuarioFormaPagamentoValidatorTest {
 
     RestauranteRepository restauranteRepository = Mockito.mock(RestauranteRepository.class);
     UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
     Collection<RegraFraude> regrasFrudes = List.of((formaPagamento, usuario) -> true);
-    CombinacaoRestauranteUsuarioFormPagamentoValidator validator = new CombinacaoRestauranteUsuarioFormPagamentoValidator(
+    CombinacaoRestauranteUsuarioFormaPagamentoValidator validator = new CombinacaoRestauranteUsuarioFormaPagamentoValidator(
             restauranteRepository, usuarioRepository, regrasFrudes);
 
     public static Stream<Arguments> geradorTeste1() {

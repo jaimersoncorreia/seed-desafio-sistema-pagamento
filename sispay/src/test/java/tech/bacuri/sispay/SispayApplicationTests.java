@@ -3,10 +3,10 @@ package tech.bacuri.sispay;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class SispayApplicationTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 

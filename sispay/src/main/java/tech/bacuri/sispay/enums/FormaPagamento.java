@@ -27,4 +27,8 @@ public enum FormaPagamento {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Valor Ativo inválido"));
     }
+
+    public boolean pertence(FormaPagamento... grupo) {
+        return Arrays.asList(grupo).contains(this);
+    }
 }

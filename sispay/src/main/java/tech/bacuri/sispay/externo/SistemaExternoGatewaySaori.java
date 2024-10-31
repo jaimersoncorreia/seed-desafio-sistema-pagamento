@@ -1,0 +1,21 @@
+package tech.bacuri.sispay.externo;
+
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class SistemaExternoGatewaySaori implements PodeMeDeixarCaotico {
+    private static final Logger log = LoggerFactory.getLogger(SistemaExternoGatewaySaori.class);
+
+    @PostMapping(value = "/saori/processa")
+    public void processa(@RequestBody @Valid DadosCompraGenerico request) {
+        log.info("Processando pagamento gateway saori {}", request);
+        System.out.println("Processando pagamento gateway saori " + request);
+    }
+}

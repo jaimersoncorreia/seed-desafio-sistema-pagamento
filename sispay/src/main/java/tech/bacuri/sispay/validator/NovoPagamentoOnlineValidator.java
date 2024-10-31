@@ -5,25 +5,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import tech.bacuri.sispay.dto.NovoPedidoOfflineForm;
+import tech.bacuri.sispay.dto.NovoPagamentoOnlineForm;
 
-@Component
 @RequiredArgsConstructor
-public class NovoPedidoOfflineFormValidator implements Validator {
-    private final CombinacaoRestauranteUsuarioFormaPagamentoValidator combinacaoRestauranteUsuarioFormaPagamentoValidator;
+@Component
+public class NovoPagamentoOnlineValidator implements Validator {
+
     private final PagamentoGeradoValidator pagamentoGeradoValidator;
+    private final CombinacaoRestauranteUsuarioFormaPagamentoValidator combinacaoRestauranteUsuarioFormaPagamentoValidator;
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
-        return NovoPedidoOfflineForm.class.isAssignableFrom(clazz);
+        return NovoPagamentoOnlineForm.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(@NonNull Object target, Errors errors) {
         if (errors.hasErrors()) return;
 
-        combinacaoRestauranteUsuarioFormaPagamentoValidator.validate(target, errors);
-        new FormaPagamentoOfflineValidator().validate(target, errors);
         pagamentoGeradoValidator.validate(target, errors);
+        combinacaoRestauranteUsuarioFormaPagamentoValidator.validate(target, errors);
+        new FormaPagamentoOnlineValidator().validate(target, errors);
     }
 }

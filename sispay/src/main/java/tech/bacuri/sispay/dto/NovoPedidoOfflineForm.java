@@ -11,12 +11,13 @@ import tech.bacuri.sispay.entity.Usuario;
 import tech.bacuri.sispay.enums.FormaPagamento;
 import tech.bacuri.sispay.enums.StatusTransacao;
 import tech.bacuri.sispay.validator.ExistsId;
+import tech.bacuri.sispay.validator.TemCombinacaoUsuarioRestauranteFormaPagamento;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class NovoPedidoOfflineForm {
+public class NovoPedidoOfflineForm implements TemCombinacaoUsuarioRestauranteFormaPagamento {
 
     @NotNull
     private FormaPagamento formaPagamento;
@@ -43,6 +44,7 @@ public class NovoPedidoOfflineForm {
     public Pagamento toPagamento(Long idPedido, BigDecimal valor, EntityManager manager) {
         Usuario usuario = manager.find(Usuario.class, this.idUsuario);
         Restaurante restaurante = manager.find(Restaurante.class, this.idRestaurante);
-        return new Pagamento(idPedido, valor, usuario, restaurante, StatusTransacao.ESPERANDO_CONFIRMACAO_PAGAMENTO);
+
+        return Pagamento.offline(idPedido, valor, formaPagamento, usuario, restaurante, StatusTransacao.ESPERANDO_CONFIRMACAO_PAGAMENTO);
     }
 }

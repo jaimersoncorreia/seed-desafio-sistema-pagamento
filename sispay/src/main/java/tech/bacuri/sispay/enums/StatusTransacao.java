@@ -10,7 +10,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public enum StatusTransacao {
     ESPERANDO_CONFIRMACAO_PAGAMENTO(1, "Aguardando confirmação de pagamento"),
-    CONCLUIDA(2, "Pagamento concluído");
+    CONCLUIDA(2, "Pagamento concluído"),
+    FALHA(3, "Falha na transação");
 
     private final int codigo;
     private final String descricao;

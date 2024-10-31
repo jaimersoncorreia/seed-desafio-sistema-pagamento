@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.transaction.annotation.Transactional;
 import tech.bacuri.sispay.entity.Restaurante;
 import tech.bacuri.sispay.entity.Usuario;
@@ -14,6 +15,7 @@ import tech.bacuri.sispay.service.EnvioEmailService;
 
 @AllArgsConstructor
 @SpringBootApplication
+@EnableFeignClients
 public class SispayApplication implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;

@@ -1,5 +1,6 @@
 package tech.bacuri.sispay.validator;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,21 +17,21 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor
-public class CombinacaoRestauranteUsuarioFormPagamentoValidator implements Validator {
+public class CombinacaoRestauranteUsuarioFormaPagamentoValidator implements Validator {
     private final RestauranteRepository restauranteRepository;
     private final UsuarioRepository usuarioRepository;
     private final Collection<RegraFraude> regrasFraudes;
 
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(@NonNull Class<?> clazz) {
         return NovoPedidoOfflineForm.class.isAssignableFrom(clazz);
     }
 
     @Transactional
     @Override
-    public void validate(Object target, Errors errors) {
+    public void validate(@NonNull Object target, Errors errors) {
         if (errors.hasErrors()) return;
-        NovoPedidoOfflineForm form = (NovoPedidoOfflineForm) target;
+        TemCombinacaoUsuarioRestauranteFormaPagamento form = (TemCombinacaoUsuarioRestauranteFormaPagamento) target;
         Usuario usuario = usuarioRepository.getUsuarioById(form.getIdUsuario());
         Restaurante restaurante = restauranteRepository.getRestaurantesById(form.getIdRestaurante());
         if (!usuario.podePagar(restaurante, form.getFormaPagamento(), regrasFraudes))
