@@ -14,7 +14,9 @@ import tech.bacuri.sispay.service.TransacaoBancoDeDados;
 import tech.bacuri.sispay.validator.NovoPagamentoOnlineValidator;
 
 import java.util.List;
-
+/*
+TODO: fazer esses testes
+Como Alberto refatorou os testes 3 meses depois: Parte 1, parte 2, parte 3, parte 4*/
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/pagamentos/online")

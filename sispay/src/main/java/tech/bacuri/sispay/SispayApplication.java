@@ -29,12 +29,12 @@ public class SispayApplication implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) {
-        envioEmailService.enviar(EnvioEmailService.Mensagem.builder()
+        /*envioEmailService.enviar(EnvioEmailService.Mensagem.builder()
                 .destinatario("jaimerson_correia+teste1@hotmail.com")
                 .destinatario("jaimerson_correia+teste2@hotmail.com")
                 .assunto("[TESTE] Enviar E-mail")
                 .conteudo("<strong>Caro Senhor Primeiro</strong>, <br />Venho atravez desse primeiro teste de envio de email cumprimentá-lo")
-                .build());
+                .build());*/
 
         usuarioRepository.save(new Usuario("teste1@bacuri.tech", FormaPagamento.VISA, FormaPagamento.ELO, FormaPagamento.HIPERCARD, FormaPagamento.DINHEIRO));
         usuarioRepository.save(new Usuario("teste2@bacuri.tech", FormaPagamento.MASTER, FormaPagamento.ELO, FormaPagamento.DINHEIRO));
